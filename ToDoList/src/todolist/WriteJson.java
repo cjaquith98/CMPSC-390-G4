@@ -17,13 +17,12 @@ public class WriteJson {
             String title = "TestTask";
             int importance = 1;
             String desc = "This is a test description";
-            Task testTask = new Task(title, testDate, importance, desc);            
+            Task testTask = new Task(title, testDate, desc);            
         //Creating a JSONObject object
             JSONObject jsonObject = new JSONObject();
         //Inserting key-value pairs into the json object
             jsonObject.put("Title:", title);
             jsonObject.put("Date:", testDate);
-            jsonObject.put("Leve of Importance:", importance);
             jsonObject.put("Description:", desc);
 
       try {
