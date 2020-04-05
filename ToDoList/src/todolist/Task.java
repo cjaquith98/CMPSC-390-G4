@@ -24,6 +24,5 @@ public class Task {
     //Get statements used to print data into corrects boxes on the home screen?
     public String getTitle() { return title; }
     public LocalDate getDueDate() { return dueDate; }
-    public Integer getImportance() { return importance; }
     public String getDescription() { return description; }
 }
