@@ -4,6 +4,8 @@ package todolist;
 import java.time.LocalDate;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -11,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,6 +23,15 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class ToDoList extends Application {
+     String task;
+     String description;
+     LocalDate date;
+     int priority;
+     ObservableList<String> taskList;
+     
+     String list;
+     ObservableList<String> lystList;
+     
     
   public static void main(String[] args) {
         launch(args);
@@ -81,6 +93,35 @@ public class ToDoList extends Application {
         taskLabel.setLayoutY(150);
         taskLabel.setFont(new Font("Arial", 24));
         
+        //ListView were the list will be displayed
+        lystList = FXCollections.<String>observableArrayList();
+        ListView<String> lists = new ListView<>(lystList);
+        lists.setLayoutX(0);
+        lists.setLayoutY(200);
+        lists.setMaxHeight(300);
+        lists.setMaxWidth(200);
+        
+        //possible way to display tasks from a certian list
+        Button getListBtn = new Button("Open List");
+         getListBtn.setLayoutY(540);
+
+        getListBtn.setOnAction(event -> {
+           
+             String selectedList = lists.getSelectionModel().getSelectedItem();
+             System.out.println(selectedList);
+             
+        });
+        
+        
+        //ListView were the tasks will be displayed
+        taskList = FXCollections.<String>observableArrayList();
+        ListView<String> tasks = new ListView<>(taskList);
+        tasks.setLayoutX(250);
+        tasks.setLayoutY(200);
+        tasks.setMaxHeight(200);
+        tasks.setMaxWidth(250);
+        
+         
         Rectangle bottomBorder = new Rectangle(600, 20);
         bottomBorder.setLayoutX(0);
         bottomBorder.setLayoutY(580);
@@ -94,11 +135,15 @@ public class ToDoList extends Application {
         root.getChildren().add(bottomBorder);
         root.getChildren().add(listLabel);
         root.getChildren().add(taskLabel);
+        root.getChildren().add(tasks);
+        root.getChildren().add(getListBtn);
+        root.getChildren().add(lists);
         
          createNewTaskBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
              public void handle(ActionEvent event) {
-               taskScreen();   
+               taskScreen();
+               
             }
         });
          
@@ -110,7 +155,7 @@ public class ToDoList extends Application {
             }
         });
          
-         
+          
         primaryStage.show();
     }
 
@@ -143,51 +188,50 @@ public class ToDoList extends Application {
       //Setting the preserve ratio of the image view 
       logo.setPreserveRatio(true);  
       
-     
-        
-        Button enterTaskBtn = new Button();
-        enterTaskBtn.setText("Enter Task");
-        enterTaskBtn.setLayoutX(300);
-        enterTaskBtn.setLayoutY(100);
+      
+      Label title = new Label();
+      title.setText("To-Do List");
+      title.setLayoutX(250);
+      title.setFont(new Font("Arial", 24));
+      
+       
         
         TextField taskTextbox = new TextField();
+        taskTextbox.setPrefSize(300, 50);
         taskTextbox.setLayoutX(150);
         taskTextbox.setLayoutY(100);
-        taskTextbox.setText("Enter your Task....");
+        taskTextbox.setPromptText("Enter your Task....");
   
         
         DatePicker datePicker = new DatePicker();
         datePicker.setLayoutX(150);
-        datePicker.setLayoutY(140);
+        datePicker.setLayoutY(180);
 
-        
-        Button descriptionBtn = new Button();
-        descriptionBtn.setText("Add Description");
-        descriptionBtn.setLayoutX(300);
-        descriptionBtn.setLayoutY(180);
         
         TextField descriptionTextbox = new TextField();
+        descriptionTextbox.setPrefSize(300, 100);
         descriptionTextbox.setLayoutX(150);
-        descriptionTextbox.setLayoutY(180);    
+        descriptionTextbox.setLayoutY(230);
+        descriptionTextbox.setPromptText("Enetr description for task... ");
+        
 
-        Button subTasksBtn = new Button();
-        subTasksBtn.setText("Add Sub Tasks");
-        subTasksBtn.setLayoutX(300);
-        subTasksBtn.setLayoutY(220);
         
         TextField subTasksTextbox = new TextField();
         subTasksTextbox.setLayoutX(150);
-        subTasksTextbox.setLayoutY(220);
+        subTasksTextbox.setLayoutY(340);
 
-        
-        Button priorityBtn = new Button();
-        priorityBtn.setText("Set Priority");
-        priorityBtn.setLayoutX(300);
-        priorityBtn.setLayoutY(260);
         
         TextField priorityTextbox = new TextField();
         priorityTextbox.setLayoutX(150);
-        priorityTextbox.setLayoutY(260);
+        priorityTextbox.setLayoutY(380);
+        
+        
+        Button createTaskBtn = new Button();
+        createTaskBtn.setText("Create Task");
+        createTaskBtn.setPrefSize(300, 50);
+        createTaskBtn.setLayoutX(150);
+        createTaskBtn.setLayoutY(430);
+        createTaskBtn.setFont(new Font("Arial", 20));
 
         
         Rectangle bottomBorder = new Rectangle(600, 20);
@@ -195,20 +239,32 @@ public class ToDoList extends Application {
         bottomBorder.setLayoutY(580);
         bottomBorder.setFill(Color.DEEPSKYBLUE);
         
+        createTaskBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+             public void handle(ActionEvent event) {
+              task = taskTextbox.getText();
+              date = datePicker.getValue();
+              taskList.add(task + " " + date);
+              //creates a new Task Object
+              //Task newTask = new Task();
+              
+              
+            }
+        });
+        
        
         root.getChildren().add(logo);
-        root.getChildren().add(enterTaskBtn);
+        root.getChildren().add(title);
+        root.getChildren().add(createTaskBtn);
         root.getChildren().add(taskTextbox);
         root.getChildren().add(datePicker);
-        root.getChildren().add(descriptionBtn);
-        root.getChildren().add(subTasksBtn);
-        root.getChildren().add(priorityBtn);
         root.getChildren().add(descriptionTextbox);
         root.getChildren().add(subTasksTextbox);
         root.getChildren().add(priorityTextbox);
         root.getChildren().add(bottomBorder);
         
         newWindow.show();
+        
     }
     
     
@@ -241,24 +297,38 @@ public class ToDoList extends Application {
       //Setting the preserve ratio of the image view 
       logo.setPreserveRatio(true);  
       
-       Button listBtn = new Button();
-        listBtn.setText("Create List");
-        listBtn.setLayoutX(150);
-        listBtn.setLayoutY(100);
+      Label title = new Label();
+      title.setText("To-Do List");
+      title.setLayoutX(100);
+      title.setFont(new Font("Arial", 15));
+      
+       Button createListBtn = new Button();
+        createListBtn.setText("Create List");
+        createListBtn.setLayoutX(150);
+        createListBtn.setLayoutY(100);
         
         TextField listTextbox = new TextField();
         listTextbox.setLayoutX(0);
         listTextbox.setLayoutY(100);
-        listTextbox.setText("Enter New List....");
+        listTextbox.setPromptText("Enter New List....");
         
         Rectangle bottomBorder = new Rectangle(300, 10);
         bottomBorder.setLayoutX(0);
         bottomBorder.setLayoutY(255);
         bottomBorder.setFill(Color.DEEPSKYBLUE);
         
+        createListBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+             public void handle(ActionEvent event) {
+              list = listTextbox.getText();
+              lystList.add(list);
+            }
+        });
+        
         
        root.getChildren().add(logo);
-       root.getChildren().add(listBtn);
+       root.getChildren().add(title);
+       root.getChildren().add(createListBtn);
        root.getChildren().add(listTextbox);
        root.getChildren().add(bottomBorder);
       
