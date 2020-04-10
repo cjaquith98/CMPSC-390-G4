@@ -244,11 +244,19 @@ public class ToDoList extends Application {
              public void handle(ActionEvent event) {
               task = taskTextbox.getText();
               date = datePicker.getValue();
-              taskList.add(task + " " + date);
-              //creates a new Task Object
-              //Task newTask = new Task();
+              description = descriptionTextbox.getText();
               
+               //creates a new Task Object
+              Task newTask = new Task(task, date, description);
               
+              //test print
+               taskList.add(task + " " + date);
+              
+             //clears textboxes after task is created
+              taskTextbox.clear();
+              descriptionTextbox.clear();
+              
+             
             }
         });
         
