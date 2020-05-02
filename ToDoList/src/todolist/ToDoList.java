@@ -1,6 +1,7 @@
 
 package todolist;
 
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
@@ -21,11 +22,15 @@ import javafx.stage.Stage;
 
 public class ToDoList extends Application {
     
-  public static void main(String[] args) {
-        launch(args);
-        
+  public static void main(String[] args) throws FileNotFoundException {
+        //launch(args);
+            LocalDate testDate = LocalDate.of(2020,3,30);
+            String title = "TestTask3";
+            int importance = 3;
+            String desc = "This is a test description3";
+            Task t = new Task(title, testDate, importance, desc); 
         //calls jsonStorage method, from WriteJson Class, to execute
-        WriteJson.jsonStorage();        
+        WriteJson.WriteJsonStorage(t);        
     }
 
 

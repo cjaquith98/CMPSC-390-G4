@@ -1,38 +1,57 @@
 package todolist;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
 
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
+
 
 import todolist.Task;
 
     @SuppressWarnings("unchecked")
-public class WriteJson {        
-        public static void jsonStorage(){
-        //Creating local object Task to test in json storage     
-            LocalDate testDate = LocalDate.of(2020,3,30);
-            String title = "TestTask";
-            int importance = 1;
-            String desc = "This is a test description";
-            Task testTask = new Task(title, testDate, desc);            
-        //Creating a JSONObject object
-            JSONObject jsonObject = new JSONObject();
-        //Inserting key-value pairs into the json object
-            jsonObject.put("Title:", title);
-            jsonObject.put("Date:", testDate);
-            jsonObject.put("Description:", desc);
+public class WriteJson {
 
-      try {
-         FileWriter file = new FileWriter("Storage.json");
-         file.write(jsonObject.toJSONString());
-         file.close();
-      } catch (IOException e) {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
-      }
-      System.out.println("JSON file created: "+jsonObject);
-   }
+
+    @SuppressWarnings("unchecked")
+    public static void WriteJsonStorage(Task t) throws FileNotFoundException {
+            //Creating local object Task to test in json storage     
+            LocalDate date = t.getDueDate();
+            String title = t.getTitle();
+            int importance = t.getImportance();
+            String desc = t.getDescription();
+            //Creating a JSONObject object
+            JSONObject taskDetails = new JSONObject();
+            //Inserting key-value pairs into the json object
+            taskDetails.put("Title:", title);
+            taskDetails.put("Date:", date);
+            taskDetails.put("Level of Importance:", importance);
+            taskDetails.put("Description:", desc);
+
+            JSONObject taskObject = new JSONObject();
+            taskObject.put(date, taskDetails);
+
+            //putting objects into json array
+            JSONArray array2 = new JSONArray();
+            array2.add(taskDetails);
+
+            PrintWriter file = null;
+            try{
+                file = new PrintWriter("V:\\Computer Programming\\CMPSC-390-G4\\ToDoList\\Storage.json");
+                file.write(taskDetails.toJSONString());
+                
+            } catch (IOException e) {
+                e.printStackTrace();
+                
+            }
+
+    
 }
+    }
