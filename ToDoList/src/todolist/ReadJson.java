@@ -1,48 +1,45 @@
+
 package todolist;
 
 
+import java.time.LocalDate;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.Iterator;
-
-import todolist.Task;
+import java.io.*;
+import com.google.gson.*;
+import com.google.gson.stream.*;
+import com.google.gson.annotations.*;
 
 
 public class ReadJson {
-
-    @SuppressWarnings("unchecked")
-    public static void WriteJsonStorage(LocalDate d) {
-        JSONParser jsonParser = new JSONParser();
+    
+    
+    public static void readJson(){
+    JSONParser parser = new JSONParser();
+    
+    try(FileReader file = new FileReader("V:\\Computer Programming\\CMPSC-390-G4-master\\ToDoList\\Storage.json")){
+        Object obj = parser.parse(file); //parsing file
+        JSONObject jsonObject = (JSONObject) obj; //taking jsonobject from file and bringing into program
         
-        try {
-            //reading json file in
-            FileReader reader = new FileReader("Storage.json");
-            
-            //parsing 
-            JSONObject jsonObj = (JSONObject) jsonParser.parse(reader);
-            JSONArray jsonArr = (JSONArray) jsonObj.get("");
-
-            Iterator<?> i = jsonArr.iterator();
-            
-            //loop to go through json file
-            while (i.hasNext()) {
-                JSONObject obj = (JSONObject) i.next();
-                int lvl = (int) obj.get("Level of Importance");
-                String title = (String) obj.get("Title"); 
-                String desc = (String) obj.get("Description");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        //creating local date and parsing to string
+        LocalDate date = LocalDate.now();
+        String lDate = date.toString();
+        
+        //displays the json object with the local date 
+        String name = (String) jsonObject.get(lDate).toString();
+        
+        System.out.println("Task is: "+ name);
+        
+        
     }
-
+    catch(FileNotFoundException e){e.printStackTrace();}
+    catch(IOException e){e.printStackTrace();}
+    catch(ParseException e){e.printStackTrace();}
+    catch(Exception e){e.printStackTrace();}
+    
+    
+    }
 }
-
